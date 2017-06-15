@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Preferences
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-label>Push Notifications {{pushNotifications ? 'On' : 'Off'}}</ion-label>
+        <ion-checkbox [(ngModel)]="pushNotifications" id="1" color="dark" (ionChange)="pushNotifications === true ? vibrate() : doNothing()"></ion-checkbox>
+    </ion-item>
+</ion-content>

@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            {{params.data.entry.website || ''}} Detail
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <div *ngIf="!editingEntry" id="entryView">
+        <p>Website: {{params.data.entry.website}}</p>
+        <p>User Name/Email: {{params.data.entry.identity}}</p>
+        <input [type]="showPassword ? 'text' : 'password'" [value]="params.data.entry.password" readonly="readonly">
+        <button ion-button color="danger" (click)="toggleShowPassword()">Show Password</button>
+
+        <button ion-button color="dark" (click)="loadEdit()">Edit Entry</button>
+    </div>
+
+    <div *ngIf="editingEntry" id="entryEdit">
+        <label>Website</label>
+        <input type="text" [(ngModel)]="entryService.newEntry.website" id="1" (input)="inputInstance()">
+        <label>User Name/Email</label>
+        <input type="text" [(ngModel)]="entryService.newEntry.identity">
+        <label>New Password</label>
+        <input type="text" [(ngModel)]="entryService.newEntry.password">
+        <label>Confirm New Password</label>
+        <input type="text" [(ngModel)]="confPass">
+        {{entryService.newEntry.password === confPass}}
+        <button ion-button color="primary" (click)="cancelEdit()">Cancel</button>
+        <button ion-button color="dark" #save [clear]="entryService.newEntry.password !== confPass" (click)="save._style === 'clear' ? showErrors() : saveEditedEntry()">Save Entry</button>
+        <div *ngIf="showingErrors">
+            <div *ngIf="entryService.newEntry.password !== confPass" class="errorMessage">Password Confirmation Must Match</div>
+        </div>
+    </div>
+</ion-content>

@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>
+            Add Entry
+        </ion-title>
+        <ion-title (click)="closeModal()">
+            Close
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content>
+    <input type="text" [(ngModel)]="entryService.newEntry.website">Website
+    <input type="text" [(ngModel)]="entryService.newEntry.identity">Identity
+    <input type="text" [(ngModel)]="entryService.newEntry.password">Password
+    <ion-item>
+        <ion-label>Randomize Password</ion-label>
+        <ion-checkbox color="primary" [(ngModel)]="generatePassword"></ion-checkbox>
+        <button ion-button color="dark" item-right (click)="addNewEntry()">Add Entry</button>
+    </ion-item>
+
+    <generator *ngIf="generatePassword" [open]="generatePassword" (out)="retrievePassword($event)"></generator>
+</ion-content>
