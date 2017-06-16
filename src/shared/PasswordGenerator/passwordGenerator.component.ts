@@ -27,6 +27,10 @@ export class PasswordGeneratorComponent implements OnChanges {
     }
 
     createNewPassword(scheme: string, amount?: number) {
+        // todo allow for selection chackbox of upper/lower/number/char 
+        // and option for sliding scale to specify specific amounts
+
+        // send uppercase only if case is unimportant, convert to random (r) 
         this.generator.generatePassword(scheme, amount ? amount : null)
             .subscribe((password) => {
                 this.createdPassword = password;
