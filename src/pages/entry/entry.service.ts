@@ -37,6 +37,11 @@ export class EntryService {
             })
             .subscribe(response => {
                 this.processUser(response);
+            }, (error) => {
+                console.error('There was an error retrieving user #' + id, error);
+                this.loading.dismiss();
+            }, () => {
+                console.log('User load finished');
             })
     }
 
@@ -48,12 +53,12 @@ export class EntryService {
             .subscribe((response) => {
                 this.processEntries(response);
                 console.log('received response', response);
-                this.loading.dismiss();
             }, (error) => {
                 console.error('There was an issue obtaining your entries: ' + error);
                 this.loading.dismiss();
             }, () => {
                 console.log('Received entries');
+                this.loading.dismiss();
             })
 
     }
@@ -61,6 +66,13 @@ export class EntryService {
     addEntries(): Observable<Array<Entry>> {
         this.newEntry.clientAccountNumber = this.user.id;
         return this.http.post(this.server + '/entry/add', this.newEntry)
+            .map((response) => {
+                return response.json();
+            })
+    }
+
+    deleteEntry(entry: Entry): Observable<Array<Entry>> {
+        return this.http.post(this.server + '/entry/delete', entry)
             .map((response) => {
                 return response.json();
             })

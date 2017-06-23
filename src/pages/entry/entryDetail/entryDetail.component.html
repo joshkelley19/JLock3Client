@@ -11,9 +11,10 @@
         <p>Website: {{params.data.entry.website}}</p>
         <p>User Name/Email: {{params.data.entry.identity}}</p>
         <input [type]="showPassword ? 'text' : 'password'" [value]="params.data.entry.password" readonly="readonly">
-        <button ion-button color="danger" (click)="toggleShowPassword()">Show Password</button>
+        <button ion-button color="primary" (click)="toggleShowPassword()">Show Password</button>
 
         <button ion-button color="dark" (click)="loadEdit()">Edit Entry</button>
+        <button ion-button color="danger" (click)="deleteEntry()">Delete Entry</button>
     </div>
 
     <div *ngIf="editingEntry" id="entryEdit">

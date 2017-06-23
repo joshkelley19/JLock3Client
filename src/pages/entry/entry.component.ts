@@ -21,6 +21,10 @@ export class EntryComponent{
         'G','H','I','J','K','L','M','N','O','P','Q',
         'R','S','T','U','V','W','X','Y','Z'];
 
+        // todo add support for numbers/special characters
+
+        // todo add logic to refresh page on ALL loads. Refresh Event?
+
         addEventListener('closeModal', () => {
             this.closeModal();
         })

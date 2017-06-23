@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavController } from 'ionic-angular';
 
 import { EntryService } from '../entry.service';
 import { Entry } from '../../../model/Entry';
@@ -10,7 +11,7 @@ export class AddModalComponent {
     close: Event;
     generatePassword: boolean;
 
-    constructor(private entryService: EntryService) {
+    constructor(private entryService: EntryService, private nav: NavController) {
         this.entryService.resetNewEntry();
         console.log('modal opened');
         this.close = new Event('closeModal');
@@ -18,6 +19,7 @@ export class AddModalComponent {
 
     closeModal() {
         console.log('closing modal');
+        this.nav.pop();
     }
 
     addNewEntry() {

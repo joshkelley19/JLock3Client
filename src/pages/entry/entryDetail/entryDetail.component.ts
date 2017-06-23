@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, NavController } from 'ionic-angular';
 
 import { EntryService } from '../entry.service';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +17,7 @@ export class EntryDetailComponent implements OnInit {
     observer: Observer<string>;
     count: number = 0;
 
-    constructor(private params: NavParams, private entryService: EntryService) {
+    constructor(private params: NavParams, private nav: NavController, private entryService: EntryService) {
         console.log('nav params service', this.params);
         this.observer = {
             next: (string) => {
@@ -36,7 +36,7 @@ export class EntryDetailComponent implements OnInit {
         console.log('init');
         document.onload = () => {
             let el = document.getElementById('1');
-            console.log('found element in init',el);
+            console.log('found element in init', el);
             el.onfocus = () => {
                 this.bindObservable();
             }
@@ -46,7 +46,7 @@ export class EntryDetailComponent implements OnInit {
     bindObservable() {
         let el: HTMLElement = document.getElementById('1');
         this.observable = Observable.fromEvent(el, 'input');
-        console.log('found element',el)
+        console.log('found element', el)
         this.observable.subscribe(this.observer);
     }
 
@@ -70,11 +70,29 @@ export class EntryDetailComponent implements OnInit {
 
     saveEditedEntry() {
         console.log('saving edited entry');
+        // todo separate entry being edited from saved entry
+        //fix edit logic and service call
+        
         this.entryService.addEntries()
             .subscribe(response => {
                 this.entryService.resetNewEntry();
                 this.editingEntry = false;
                 this.showingErrors = false;
+            })
+    }
+
+    deleteEntry() {
+        this.entryService.deleteEntry(this.params.data.entry)
+            .subscribe(response => {
+                this.entryService.processEntries(response);
+                // todo add logic to return to entry page
+            }, (error) => {
+                console.error('There was an error attempting to delete entry '
+                    + this.params.data.entry, error);
+                this.nav.pop();
+            }, () => {
+                console.log('entry deleted', this.params.data.entry);
+                this.nav.pop();
             })
     }
 
