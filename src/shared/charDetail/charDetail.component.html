@@ -1,0 +1,19 @@
+<ion-content>
+    <div>
+        <ion-list radio-group>
+            <ion-list-header>{{header}}</ion-list-header>
+            <ion-item>
+                <ion-label>None</ion-label>
+                <ion-radio checked="true" (click)="setConfigStatus(none)"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Any Amount</ion-label>
+                <ion-radio (click)="setConfigStatus(plus)"></ion-radio>
+            </ion-item>
+            <ion-item>
+                <ion-label>Set Amount</ion-label>
+                <ion-radio (click)="setConfigStatus(custom)"></ion-radio>
+            </ion-item>
+        </ion-list>
+    </div>
+</ion-content>

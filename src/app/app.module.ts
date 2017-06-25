@@ -10,6 +10,7 @@ import { EntryDetailComponent } from '../pages/entry/entryDetail/entryDetail.com
 import { PreferencesComponent } from '../pages/preferences/preferences.component';
 import { AddModalComponent } from '../pages/entry/addModal/addModal.component';
 import { PasswordGeneratorComponent } from '../shared/PasswordGenerator/passwordGenerator.component';
+import { CharDetailComponent } from '../shared/charDetail/charDetail.component';
 
 import { EntryService } from '../pages/entry/entry.service';
 import { PasswordGeneratorService } from '../shared/PasswordGenerator/passwordGenerator.service';
@@ -28,6 +29,7 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     EntryDetailComponent,
     PreferencesComponent,
     PasswordGeneratorComponent,
+    CharDetailComponent,
     LetterFilterPipe,
     LetterShowPipe
   ],
@@ -44,7 +46,8 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     AddModalComponent,
     EntryDetailComponent,
     PreferencesComponent,
-    PasswordGeneratorComponent
+    PasswordGeneratorComponent,
+    CharDetailComponent
   ],
   providers: [EntryService, PasswordGeneratorService, {provide: ErrorHandler, useClass: IonicErrorHandler},]
 })
