@@ -85,10 +85,10 @@ export class EntryDetailComponent implements OnInit {
         this.entryService.deleteEntry(this.params.data.entry)
             .subscribe(response => {
                 this.entryService.processEntries(response);
-                // todo add logic to return to entry page
+                // todo add logic to refresh entry page
+                // subscribe to emitted event from processing entries on entry comp
             }, (error) => {
-                console.error('There was an error attempting to delete entry '
-                    + this.params.data.entry, error);
+                console.error('There was an error attempting to delete entry ', this.params.data.entry, error);
                 this.nav.pop();
             }, () => {
                 console.log('entry deleted', this.params.data.entry);

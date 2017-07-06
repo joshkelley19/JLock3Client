@@ -34,8 +34,10 @@ export class AddModalComponent {
     }
 
     retrievePassword(event: any) {
-        this.generatePassword = event.data.maintain;
-        let newPass = event.data.password;
-        this.entryService.newEntry.password = newPass ? newPass : 'No Password Generated';
+        console.log('in add modal retrieve event', event);
+        // this.generatePassword = event.data.maintain;
+        // let newPass = event.data.password;
+        // console.log('retrieve password',this.generatePassword,this.addNewEntry);
+        // this.entryService.newEntry.password = newPass ? newPass : 'No Password Generated';
     }
 }

@@ -22,7 +22,7 @@ export class PasswordGeneratorComponent implements OnChanges {
     // symbols: boolean;
 
     constructor(private generator: PasswordGeneratorService) {
-        this.passwordConfig = <PasswordConfig>{};
+        this.passwordConfig = <PasswordConfig>{length: this.minimum,charStandard: false,lowerCase: null};
         // todo radio buttons(2, none/any). checkbox to set specific amount 
     }
 
@@ -30,19 +30,20 @@ export class PasswordGeneratorComponent implements OnChanges {
         this.resetAll;
     }
 
-    createNewPassword(passwordConfig: PasswordConfig) {
-        // todo allow for selection checkbox of upper/lower/number/char 
-        // and option for sliding scale to specify specific amounts
+    createNewPassword() {
+        // todo option for sliding scale to specify specific amounts
 
-        // send uppercase only if case is unimportant, convert to random (r) 
-        this.generator.generatePassword(passwordConfig)
+        // todo send uppercase only if case is unimportant, convert to random (r) 
+        this.generator.generatePassword(this.passwordConfig)
             .subscribe((password) => {
-                this.createdPassword = JSON.stringify(password);
+                // this.createdPassword = JSON.stringify(password);
+                this.createdPassword = password;
+                console.log('returned password',password);
             }, (error) => {
-                console.error('There was an issue with creating the your password: ' + error);
+                console.error('There was an issue with creating the password: ' + error);
             }, () => {
                 console.log('Password created');
-                this.returnPasswordEvent.emit();
+                this.returnPasswordEvent.emit(this.createdPassword);
             });
     }
 

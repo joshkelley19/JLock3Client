@@ -12,10 +12,10 @@ export class PasswordGeneratorService {
 
     }
 
-    generatePassword(passwordDetails: PasswordConfig): Observable<Response> {
-        return this.http.post(JLockConstants.HOSTURL + '/randomizer', passwordDetails)
+    generatePassword(passwordDetails: PasswordConfig): Observable<string> {
+        return this.http.post(JLockConstants.HOSTURL + '/any', passwordDetails)
             .map((response) => {
-                return response.json();
+                return response.text();
             });
     }
 }

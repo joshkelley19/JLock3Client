@@ -18,7 +18,7 @@ export class CharDetailComponent {
 
     constructor() {
         console.log('char detail open');
-        this.charConfig = <CharacterConfig>{};
+        this.charConfig = <CharacterConfig>{amount: 0, type: CharacterConfig.STATUS.NONE};
     }
 
     setConfigStatus(status: CharacterConfig.STATUS) {
@@ -27,7 +27,7 @@ export class CharDetailComponent {
     }
 
     setCharConfig() {
-        // this.output.emit(this.charConfig);
+        this.output.emit(this.charConfig);
         console.log('Char Config', this.charConfig);
     }
 }

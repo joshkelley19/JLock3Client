@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { LoadingController, Loading } from 'ionic-angular';
 import 'rxjs';
@@ -14,52 +14,10 @@ export class EntryService {
     user: User;
     entries: Array<Entry>;
     server: string = JLockConstants.HOSTURL;
-    loading: Loading;
 
     constructor(private http: Http, private load: LoadingController) {
         this.entries = new Array<Entry>();
         this.user = <User>{};
-        this.loading = this.load.create({
-            content: 'Entries are loading',
-            spinner: 'bubbles'
-            // bubbles circles crescent dots
-        })
-
-        this.loading.present().then(() => {
-            this.getUser(1);
-        })
-    }
-
-    getUser(id: number) {
-        this.http.get(this.server + '/user/' + id)
-            .map(response => {
-                return response.json();
-            })
-            .subscribe(response => {
-                this.processUser(response);
-            }, (error) => {
-                console.error('There was an error retrieving user #' + id, error);
-                this.loading.dismiss();
-            }, () => {
-                console.log('User load finished');
-            })
-    }
-
-    getEntries(userId: number) {
-        this.http.get(this.server + '/entry/' + userId)
-            .map((response) => {
-                return response.json();
-            })
-            .subscribe((response) => {
-                this.processEntries(response);
-                console.log('received response', response);
-            }, (error) => {
-                console.error('There was an issue obtaining your entries: ' + error);
-                this.loading.dismiss();
-            }, () => {
-                console.log('Received entries');
-                this.loading.dismiss();
-            })
 
     }
 
@@ -72,26 +30,32 @@ export class EntryService {
     }
 
     deleteEntry(entry: Entry): Observable<Array<Entry>> {
-        return this.http.post(this.server + '/entry/delete', entry)
+        let request: RequestOptionsArgs = {
+            body: entry
+        }
+        return this.http.delete(this.server + '/entry/delete', request)
             .map((response) => {
                 return response.json();
             })
     }
 
-    processUser(httpResponse) {
-        this.user = httpResponse;
-        console.log('returned response for user', httpResponse);
-        console.log('returned user', this.user);
-        this.getEntries(this.user.id);
-    }
+
 
     resetNewEntry() {
         console.log('resetting new entry');
         this.newEntry = <Entry>{};
     }
 
+    processUser(httpResponse) {
+        this.user = httpResponse;
+        console.log('returned user', this.user);
+    }
+
+
     processEntries(httpResponse) {
         this.entries = httpResponse;
+        console.log('processing entries', this.entries);
     }
+
 
 }
