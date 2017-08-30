@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 import {
     ModalController, Modal, NavController, NavOptions,
     LoadingController, Loading
 } from 'ionic-angular';
 
-import { EntryService } from './entry.service';
 import { AddModalComponent } from './addModal/addModal.component';
 import { EntryDetailComponent } from './entryDetail/entryDetail.component';
 import { Entry } from '../../model/Entry';
 import { Identity } from '../../model/Identity';
+import { EntryController } from '../../shared/controllers/entry.controller';
 import { UserController } from '../../shared/controllers/user.controller';
 
 @Component({
@@ -21,17 +20,14 @@ export class EntryComponent {
     alphabet: Array<string>;
     addModal: Modal;
     loading: Loading;
-    userController: UserController;
     a: Identity;
 
-    constructor(private entry: EntryService, private modalCtrl: ModalController,
+    constructor(private entryController: EntryController, private modalCtrl: ModalController,
         private nav: NavController, private load: LoadingController,
-        private http: Http) {
+        private userController: UserController) {
         this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F',
             'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
             'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-        this.userController = new UserController(this.http, this.entry.server);
 
         // todo add support for numbers/special characters
 
@@ -57,44 +53,10 @@ export class EntryComponent {
 
     }
 
-
-    // getUser(id: number) {
-    //     this.http.get(this.entry.server + '/user/' + id)
-    //         .map(response => {
-    //             return response.json();
-    //         })
-    //         .subscribe(response => {
-    //             this.entry.processUser(response);
-    //         }, (error) => {
-    //             console.error('There was an error retrieving user #' + id, error);
-    //             this.loading.dismiss();
-    //         }, () => {
-    //             console.log('User load finished');
-    //             this.getEntries(this.entry.user.id);
-    //         })
-    // }
-
-    // getEntries(userId: number) {
-    //     this.http.get(this.entry.server + '/entry/' + userId)
-    //         .map((response) => {
-    //             return response.json();
-    //         })
-    //         .subscribe((response) => {
-    //             this.entry.processEntries(response);
-    //             console.log('received response', response);
-    //         }, (error) => {
-    //             console.error('There was an issue obtaining your entries: ' + error);
-    //             this.loading.dismiss();
-    //         }, () => {
-    //             console.log('Received entries');
-    //             this.loading.dismiss();
-    //         })
-    // }
-
     getUser(id: number, identity: Identity) {
         this.userController.getUser(id, identity)
             .subscribe(response => {
-                this.entry.processUser(response);
+                this.userController.processUser(response);
             }, error => {
                 console.error('auth failed', error);
             }, () => {
@@ -105,9 +67,9 @@ export class EntryComponent {
     }
 
     getEntries(id: number, identity: Identity) {
-        this.userController.getEntries(id, identity)
+        this.entryController.getEntries(id, identity)
             .subscribe((response) => {
-                this.entry.processEntries(response);
+                this.entryController.processEntries(response);
             }, (error) => {
                 console.error('There was an issue obtaining your entries: ' + error);
                 this.loading.dismiss();

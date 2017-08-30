@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import { EntryService } from '../entry.service';
-import { Entry } from '../../../model/Entry';
+import { EntryController } from '../../../shared/controllers/entry.controller';
+import { UserController } from '../../../shared/controllers/user.controller';
 
 @Component({
     templateUrl: './addModal.component.html'
@@ -11,8 +11,10 @@ export class AddModalComponent {
     close: Event;
     generatePassword: boolean;
 
-    constructor(private entryService: EntryService, private nav: NavController) {
-        this.entryService.resetNewEntry();
+    constructor(private entryController: EntryController, private userController: UserController,
+        private nav: NavController) {
+
+        this.entryController.resetNewEntry();
         console.log('modal opened');
         this.close = new Event('closeModal');
     }
@@ -23,13 +25,16 @@ export class AddModalComponent {
     }
 
     addNewEntry() {
-        console.log('new entry to be added', this.entryService.newEntry);
-        this.entryService.addEntries()
+        console.log('new entry to be added', this.entryController.newEntry);
+        this.entryController.addEntries(this.userController.user.id)
             .subscribe((response) => {
-                this.entryService.processEntries(response);
+                this.entryController.processEntries(response);
                 console.log('received response from post', response);
-                this.entryService.resetNewEntry();
-                dispatchEvent(this.close)
+            }, error => {
+                console.error('Error adding entries', error);
+            }, () => {
+                this.entryController.resetNewEntry();
+                dispatchEvent(this.close);
             });
     }
 

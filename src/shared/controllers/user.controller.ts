@@ -1,11 +1,16 @@
-import { Http, RequestOptionsArgs, Headers } from '@angular/http';
-import { Identity } from '../../model/Identity';
+import { Injectable } from '@angular/core';
+import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
 
+import { Observable } from 'rxjs/Observable';
+
+import { Identity, User } from '../../model';
+import { JLockConstants } from '../constants';
+
+@Injectable()
 export class UserController {
-    baseUrl: string;
+    user: User;
 
-    constructor(private http: Http, base: string) {
-        this.baseUrl = base;
+    constructor(private http: Http) {
     }
 
     getUser(id: number, auth: Identity) {
@@ -14,21 +19,15 @@ export class UserController {
         let args: RequestOptionsArgs = {
             headers
         }
-        return this.http.get(this.baseUrl + '/user/' + id, args)
+        console.log('Authorizing with', auth.userName, auth.password);
+        return this.http.get(JLockConstants.HOSTURL + '/user/' + id, args)
             .map(response => {
                 return response.json();
             });
     }
 
-    getEntries(id: number, auth: Identity) {
-        let headers = new Headers();
-        headers.append('Authorization', 'Basic ' + btoa(auth.userName + ':' + auth.password));
-        let args: RequestOptionsArgs = {
-            headers
-        }
-        return this.http.get(this.baseUrl + '/entry/' + id, args)
-            .map(response => {
-                return response.json();
-            });
+    processUser(httpResponse) {
+        this.user = httpResponse;
+        console.log('returned user', this.user);
     }
 }

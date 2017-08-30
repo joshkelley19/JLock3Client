@@ -1,0 +1,4 @@
+<ion-content>
+    <div *ngFor="let error of componentService.errors | component: parent;let i = index" class="alert alert-danger"></div>
+    <div *ngFor="let warning of componentService.warnings | component: parent;let i = index" class="alert alert-warning"></div>
+</ion-content>

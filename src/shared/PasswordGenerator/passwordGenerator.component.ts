@@ -1,8 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 
-import { PasswordGeneratorService } from './passwordGenerator.service';
+import { PasswordController } from '../controllers/password.controller';
 import { PasswordConfig } from '../../model/PasswordConfig';
-import { CharacterConfig } from '../../model/CharacterConfig';
 import { JLockConstants } from '../constants';
 
 @Component({
@@ -21,8 +20,8 @@ export class PasswordGeneratorComponent implements OnChanges {
     // numbers: boolean;
     // symbols: boolean;
 
-    constructor(private generator: PasswordGeneratorService) {
-        this.passwordConfig = <PasswordConfig>{length: this.minimum,charStandard: false,lowerCase: null};
+    constructor(private passwordController: PasswordController) {
+        this.passwordConfig = <PasswordConfig>{ length: this.minimum, charStandard: false, lowerCase: null };
         // todo radio buttons(2, none/any). checkbox to set specific amount 
     }
 
@@ -34,11 +33,11 @@ export class PasswordGeneratorComponent implements OnChanges {
         // todo option for sliding scale to specify specific amounts
 
         // todo send uppercase only if case is unimportant, convert to random (r) 
-        this.generator.generatePassword(this.passwordConfig)
+        this.passwordController.generatePassword(this.passwordConfig)
             .subscribe((password) => {
                 // this.createdPassword = JSON.stringify(password);
                 this.createdPassword = password;
-                console.log('returned password',password);
+                console.log('returned password', password);
             }, (error) => {
                 console.error('There was an issue with creating the password: ' + error);
             }, () => {

@@ -11,9 +11,11 @@ import { PreferencesComponent } from '../pages/preferences/preferences.component
 import { AddModalComponent } from '../pages/entry/addModal/addModal.component';
 import { PasswordGeneratorComponent } from '../shared/PasswordGenerator/passwordGenerator.component';
 import { CharDetailComponent } from '../shared/charDetail/charDetail.component';
+import { SignInComponent } from '../shared/sign-in/sign-in.component';
 
-import { EntryService } from '../pages/entry/entry.service';
-import { PasswordGeneratorService } from '../shared/PasswordGenerator/passwordGenerator.service';
+import { EntryController } from '../shared/controllers/entry.controller';
+import { UserController } from '../shared/controllers/user.controller';
+import { PasswordController } from '../shared/controllers/password.controller';
 
 import { LetterFilterPipe } from '../pages/entry/letter.pipe';
 import { LetterShowPipe } from '../pages/entry/entry.pipe';
@@ -30,6 +32,7 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     PreferencesComponent,
     PasswordGeneratorComponent,
     CharDetailComponent,
+    SignInComponent,
     LetterFilterPipe,
     LetterShowPipe
   ],
@@ -47,8 +50,12 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     EntryDetailComponent,
     PreferencesComponent,
     PasswordGeneratorComponent,
-    CharDetailComponent
+    CharDetailComponent,
+    SignInComponent
   ],
-  providers: [EntryService, PasswordGeneratorService, {provide: ErrorHandler, useClass: IonicErrorHandler},]
+  providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler },
+    EntryController,
+    PasswordController,
+    UserController]
 })
-export class AppModule {}
+export class AppModule { }

@@ -9,10 +9,10 @@
 <ion-content>
 
     <ion-item-group>
-        <div *ngFor="let letter of (alphabet | letterShow: entry.entries)">
+        <div *ngFor="let letter of (alphabet | letterShow: entryController.entries)">
             <div>
                 <ion-item-divider color="light">{{letter}}</ion-item-divider>
-                <ion-item *ngFor="let entry of entry.entries | letterFilter: letter" (click)="selectEntry(entry)">{{entry.website | uppercase}}</ion-item>
+                <ion-item *ngFor="let entry of entryController.entries | letterFilter: letter" (click)="selectEntry(entry)">{{entry.website | uppercase}}</ion-item>
             </div>
         </div>
     </ion-item-group>

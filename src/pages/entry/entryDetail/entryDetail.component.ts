@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 
-import { EntryService } from '../entry.service';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromevent';
 import { Observer } from 'rxjs/Observer';
+
+// import { EntryController, UserController } from '../../../shared/controllers';
+import { EntryController } from '../../../shared/controllers/entry.controller';
+import { UserController } from '../../../shared/controllers/user.controller';
 
 @Component({
     templateUrl: './entryDetail.component.html'
@@ -13,11 +17,13 @@ export class EntryDetailComponent implements OnInit {
     editingEntry: boolean = false;
     showingErrors: boolean = false;
     confPass: string;
-    observable: Observable<{}>;
+    observable: Observable<any>;
     observer: Observer<string>;
     count: number = 0;
 
-    constructor(private params: NavParams, private nav: NavController, private entryService: EntryService) {
+    constructor(private params: NavParams, private nav: NavController,
+        private entryController: EntryController, private userController: UserController) {
+
         console.log('nav params service', this.params);
         this.observer = {
             next: (string) => {
@@ -57,13 +63,13 @@ export class EntryDetailComponent implements OnInit {
 
     loadEdit() {
         this.confPass = '';
-        this.entryService.newEntry = this.params.data.entry;
+        this.entryController.newEntry = this.params.data.entry;
         this.editingEntry = true;
     }
 
     cancelEdit() {
         this.confPass = '';
-        this.entryService.resetNewEntry();
+        this.entryController.resetNewEntry();
         this.editingEntry = false;
         this.showingErrors = false;
     }
@@ -72,19 +78,19 @@ export class EntryDetailComponent implements OnInit {
         console.log('saving edited entry');
         // todo separate entry being edited from saved entry
         //fix edit logic and service call
-        
-        this.entryService.addEntries()
+
+        this.entryController.addEntries(this.userController.user.id)
             .subscribe(response => {
-                this.entryService.resetNewEntry();
+                this.entryController.resetNewEntry();
                 this.editingEntry = false;
                 this.showingErrors = false;
             })
     }
 
     deleteEntry() {
-        this.entryService.deleteEntry(this.params.data.entry)
+        this.entryController.deleteEntry(this.params.data.entry)
             .subscribe(response => {
-                this.entryService.processEntries(response);
+                this.entryController.processEntries(response);
                 // todo add logic to refresh entry page
                 // subscribe to emitted event from processing entries on entry comp
             }, (error) => {
