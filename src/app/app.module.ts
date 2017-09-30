@@ -1,4 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { ContactPage } from '../pages/contact/contact';
@@ -16,6 +17,7 @@ import { SignInComponent } from '../shared/sign-in/sign-in.component';
 import { EntryController } from '../shared/controllers/entry.controller';
 import { UserController } from '../shared/controllers/user.controller';
 import { PasswordController } from '../shared/controllers/password.controller';
+import { AuthorizationService } from '../shared/authorization.service';
 
 import { LetterFilterPipe } from '../pages/entry/letter.pipe';
 import { LetterShowPipe } from '../pages/entry/entry.pipe';
@@ -56,6 +58,7 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler },
     EntryController,
     PasswordController,
-    UserController]
+    UserController,
+    AuthorizationService]
 })
 export class AppModule { }

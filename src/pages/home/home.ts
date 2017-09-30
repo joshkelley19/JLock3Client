@@ -8,9 +8,10 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  welcomeMessage: string;
 
   constructor(public navCtrl: NavController, private http: Http) {
-
+    this.initializeComponent();
   }
 
   auth() {
@@ -18,7 +19,7 @@ export class HomePage {
     let args: RequestOptionsArgs = {
       headers
     }
-    headers.append('Authorization', 'Basic ' + btoa('youngfred'+':'+'test'));
+    headers.append('Authorization', 'Basic ' + btoa('youngfred' + ':' + 'test'));
     this.http.get('http://localhost:8080/user', args)
       .subscribe((response) => {
         console.log('Authentication response', response);
@@ -28,5 +29,10 @@ export class HomePage {
         console.log('Authentication finished and successful');
       })
   }
+
+  initializeComponent() {
+    this.welcomeMessage = 'JLock';
+  }
+
 
 }

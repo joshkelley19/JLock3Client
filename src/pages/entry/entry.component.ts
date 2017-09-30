@@ -6,10 +6,10 @@ import {
 
 import { AddModalComponent } from './addModal/addModal.component';
 import { EntryDetailComponent } from './entryDetail/entryDetail.component';
-import { Entry } from '../../model/Entry';
-import { Identity } from '../../model/Identity';
+import { Entry, User, Identity } from '../../model';
 import { EntryController } from '../../shared/controllers/entry.controller';
 import { UserController } from '../../shared/controllers/user.controller';
+import { AuthorizationService } from '../../shared/authorization.service';
 
 @Component({
     selector: 'entries',
@@ -21,10 +21,14 @@ export class EntryComponent {
     addModal: Modal;
     loading: Loading;
     a: Identity;
+    compId: number;
 
     constructor(private entryController: EntryController, private modalCtrl: ModalController,
         private nav: NavController, private load: LoadingController,
-        private userController: UserController) {
+        private userController: UserController, private auth: AuthorizationService) {
+        // todo add initialize function
+        this.userResponse();
+        this.entriesResponse();
         this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F',
             'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
             'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -43,39 +47,48 @@ export class EntryComponent {
             // bubbles circles crescent dots
         })
         this.a = {
-            userName: 'youngfred',
-            password: 'test'
+            userName: 'lilricky',
+            password: 'bloop'
         }
 
         this.loading.present().then(() => {
-            this.getUser(1, this.a);
+            this.loadEntries();
         })
 
     }
 
-    getUser(id: number, identity: Identity) {
-        this.userController.getUser(id, identity)
-            .subscribe(response => {
-                this.userController.processUser(response);
+    loadEntries() {
+        this.auth.preServiceCall(this.userController.userFunctionId);
+    }
+
+    userResponse() {
+        this.userController.getUserSubject()
+            .subscribe((user: User) => {
+                this.userController.processUser(user);
+                this.getEntries();
             }, error => {
                 console.error('auth failed', error);
             }, () => {
                 console.log('User load finished');
-                this.getEntries(id, identity);
+                // same logic to get entries
             })
-
     }
 
-    getEntries(id: number, identity: Identity) {
-        this.entryController.getEntries(id, identity)
+    getEntries() {
+        this.auth.preServiceCall(this.entryController.getEntryFunctionId);
+    }
+
+    entriesResponse() {
+        this.entryController.getGetEntrySubject()
             .subscribe((response) => {
                 this.entryController.processEntries(response);
+                this.loading.dismiss();
             }, (error) => {
                 console.error('There was an issue obtaining your entries: ' + error);
                 this.loading.dismiss();
             }, () => {
-                this.loading.dismiss();
             })
+
     }
 
     selectEntry(entry: Entry) {
@@ -87,7 +100,7 @@ export class EntryComponent {
     }
 
     addEntry() {
-        console.log('adding entry...');
+        console.log('opening add entry...');
         this.addModal = this.modalCtrl.create(AddModalComponent);
         this.addModal.present();
     }

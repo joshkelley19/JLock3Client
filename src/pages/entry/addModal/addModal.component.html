@@ -9,9 +9,9 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <input type="text" [(ngModel)]="entryService.newEntry.website">Website
-    <input type="text" [(ngModel)]="entryService.newEntry.identity">Identity
-    <input type="text" [(ngModel)]="entryService.newEntry.password">Password
+    <input type="text" [(ngModel)]="entryController.newEntry.website">Website
+    <input type="text" [(ngModel)]="entryController.newEntry.identity">Identity
+    <input type="text" [(ngModel)]="entryController.newEntry.password">Password
     <ion-item>
         <ion-label>Randomize Password</ion-label>
         <ion-checkbox color="primary" [(ngModel)]="generatePassword"></ion-checkbox>

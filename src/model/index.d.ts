@@ -4,3 +4,4 @@ export { Entry } from './Entry';
 export { CharacterConfig } from './CharacterConfig';
 export { PasswordConfig } from './PasswordConfig';
 export { User } from './User';
+export { SubjectData } from './SubjectData';
