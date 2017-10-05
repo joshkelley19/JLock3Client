@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
 
 import { EntryController } from '../../../shared/controllers/entry.controller';
 import { UserController } from '../../../shared/controllers/user.controller';
@@ -11,11 +12,12 @@ import { AuthorizationService } from '../../../shared/authorization.service';
 export class AddModalComponent {
     close: Event;
     generatePassword: boolean;
+    entrySub: Subscription;
 
     constructor(private entryController: EntryController, private userController: UserController,
         private nav: NavController, private auth: AuthorizationService) {
 
-        this.entryController.getGetEntrySubject()
+        this.entrySub = this.entryController.getGetEntrySubject()
             .subscribe((response) => {
                 this.entryController.processEntries(response);
                 console.log('received response from post', response);
@@ -34,6 +36,7 @@ export class AddModalComponent {
     closeModal() {
         console.log('closing modal');
         this.nav.pop();
+        this.entrySub.unsubscribe();
     }
 
     addNewEntry() {
@@ -51,7 +54,7 @@ export class AddModalComponent {
         // this.entryService.newEntry.password = newPass ? newPass : 'No Password Generated';
     }
 
-    test(){
+    test() {
         console.log('what\'s in new entry?', this.entryController.newEntry);
     }
 }

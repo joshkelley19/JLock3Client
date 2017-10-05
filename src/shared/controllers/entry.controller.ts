@@ -88,9 +88,9 @@ export class EntryController {
                 let requestObservable: Observable<any>;
                 if (data.token !== null && data.token !== undefined) {
                     switch (data.functionId) {
-                        case this.getEntryFunctionId: requestObservable = this.getEntries(data.token); break;
-                        case this.addEntryFunctionId: requestObservable = this.addEntries(data.token); break;
-                        case this.deleteEntryFunctionId: requestObservable = this.deleteEntry(data.token); break;
+                        case this.getEntryFunctionId: requestObservable = this.getEntries(data.token); console.log('DEBUG getting entries'); break;
+                        case this.addEntryFunctionId: requestObservable = this.addEntries(data.token); console.log('DEBUG adding entries'); break;
+                        case this.deleteEntryFunctionId: requestObservable = this.deleteEntry(data.token); console.log('DEBUG deleting entries'); break;
                     }
                     console.log('Request Observable set in switch = ', requestObservable)
                     requestObservable

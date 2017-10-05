@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromevent';
 import { Observer } from 'rxjs/Observer';
+import { Subscription } from 'rxjs/Subscription';
 
 import { EntryController } from '../../../shared/controllers/entry.controller';
 import { UserController } from '../../../shared/controllers/user.controller';
@@ -12,7 +13,7 @@ import { AuthorizationService } from '../../../shared/authorization.service';
 @Component({
     templateUrl: './entryDetail.component.html'
 })
-export class EntryDetailComponent {
+export class EntryDetailComponent implements OnDestroy {
     showPassword: boolean = false;
     editingEntry: boolean = false;
     showingErrors: boolean = false;
@@ -20,18 +21,17 @@ export class EntryDetailComponent {
     observable: Observable<any>;
     observer: Observer<string>;
     count: number = 0;
+    entrySub: Subscription;
 
     constructor(private params: NavParams, private nav: NavController,
         private entryController: EntryController, private userController: UserController,
         private auth: AuthorizationService) {
 
-        this.entryController.getGetEntrySubject()
+        this.entrySub = this.entryController.getGetEntrySubject()
             .subscribe(response => {
                 this.entryController.processEntries(response);
-            }, (error) => {
                 this.nav.pop();
-            }, () => {
-                console.log('popping nav');
+            }, (error) => {
                 this.nav.pop();
             });
 
@@ -50,11 +50,8 @@ export class EntryDetailComponent {
         this.entryController.selectedEntry = this.params.data.entry;
     }
 
-    bindObservable() {
-        let el: HTMLElement = document.getElementById('1');
-        this.observable = Observable.fromEvent(el, 'input');
-        console.log('found element', el)
-        this.observable.subscribe(this.observer);
+    ngOnDestroy() {
+        this.entrySub.unsubscribe();
     }
 
     toggleShowPassword() {
