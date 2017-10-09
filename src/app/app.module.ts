@@ -13,6 +13,8 @@ import { AddModalComponent } from '../pages/entry/addModal/addModal.component';
 import { PasswordGeneratorComponent } from '../shared/PasswordGenerator/passwordGenerator.component';
 import { CharDetailComponent } from '../shared/charDetail/charDetail.component';
 import { SignInComponent } from '../shared/sign-in/sign-in.component';
+import { ComponentPipe } from '../shared/logging/componentLevel/component.pipe'
+import { ComponentLoggingComponent } from '../shared/logging/componentLevel/logging.component'
 
 import { EntryController } from '../shared/controllers/entry.controller';
 import { UserController } from '../shared/controllers/user.controller';
@@ -36,7 +38,9 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     CharDetailComponent,
     SignInComponent,
     LetterFilterPipe,
-    LetterShowPipe
+    LetterShowPipe,
+    ComponentPipe,
+    ComponentLoggingComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)

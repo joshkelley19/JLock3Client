@@ -2,6 +2,8 @@ applications:
 - name: jlock3.0
   memory: 1Gb
   instances: 1
-  path: ./platforms/ios/build/JLock3.0.build
+  # path: ./platforms/ios/build/JLock3.0.build
+  path: ./www/
+  buildpack: https://github.com/cloudfoundry/staticfile-buildpack
 
 #    file to configure cloudfoundry apps
