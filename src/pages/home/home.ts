@@ -17,9 +17,4 @@ export class HomePage {
   initializeComponent() {
     this.welcomeMessage = 'JLock';
   }
-
-  ionViewCanLeave(): boolean {
-    console.log('trying to leave home');
-    return false;
-  }
 }
