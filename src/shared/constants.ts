@@ -16,9 +16,14 @@ export namespace JLockConstants {
         export const SYMBOL = '#';//!@#$.+
     }
 
+    export namespace Client {
+        export const id = 'josh';
+        export const secret = 'joshsecret';
+    }
+
     // local url
-    // export const HOSTURL = 'http://localhost:8080';
+    export const HOSTURL = 'http://localhost:8080';
 
     // cloudfoundry dev
-    export const HOSTURL = 'https://jlock3.cfapps.io';
+    // export const HOSTURL = 'https://jlock3.cfapps.io';
 }

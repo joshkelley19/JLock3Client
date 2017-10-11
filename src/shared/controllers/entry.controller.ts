@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
+import { Http, Response, RequestOptionsArgs } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
-import { Identity, Entry, User, SubjectData } from '../../model';
+import { Entry, SubjectData } from '../../model';
 import { JLockConstants } from '../constants';
 import { AuthorizationService } from '../authorization.service';
 
@@ -25,9 +25,9 @@ export class EntryController {
 
     getEntries(token: string): Observable<any> {
         let args: RequestOptionsArgs = this.auth.getArgs(token);
-        console.log('add entries args', args);
+        console.log('get entries args', args);
         return this.http.get(JLockConstants.HOSTURL + '/entry/' + this.auth.user.id, args)
-            .map(response => {
+            .map((response: Response) => {
                 return response.json();
             });
     }
@@ -39,8 +39,8 @@ export class EntryController {
         // args.body = this.newEntry;
         console.log('add entries args', args);
         // return this.http.post(JLockConstants.HOSTURL + '/entry/add', args)
-        return this.http.post(JLockConstants.HOSTURL + '/entry/add',this.newEntry, args)
-            .map((response) => {
+        return this.http.post(JLockConstants.HOSTURL + '/entry/add', this.newEntry, args)
+            .map((response: Response) => {
                 return response.json();
             })
     }
@@ -50,7 +50,7 @@ export class EntryController {
         let args: RequestOptionsArgs = this.auth.getArgs(token);
         args.body = this.selectedEntry;
         return this.http.delete(JLockConstants.HOSTURL + '/entry/delete', args)
-            .map((response) => {
+            .map((response: Response) => {
                 return response.json();
             })
     }
@@ -97,6 +97,9 @@ export class EntryController {
                         .subscribe((entries: Array<Entry>) => {
                             console.log('sending to entries subject ', entries);
                             this.entrySubject.next(entries);
+                        },
+                        (error) => {
+                            console.error('Error receiving entries', error);
                         })
                 }
             });

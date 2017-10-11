@@ -14,25 +14,12 @@ export class HomePage {
     this.initializeComponent();
   }
 
-  auth() {
-    let headers: Headers = new Headers();
-    let args: RequestOptionsArgs = {
-      headers
-    }
-    headers.append('Authorization', 'Basic ' + btoa('youngfred' + ':' + 'test'));
-    this.http.get('http://localhost:8080/user', args)
-      .subscribe((response) => {
-        console.log('Authentication response', response);
-      }, (error) => {
-        console.error('Error authenticating: ', error);
-      }, () => {
-        console.log('Authentication finished and successful');
-      })
-  }
-
   initializeComponent() {
     this.welcomeMessage = 'JLock';
   }
 
-
+  ionViewCanLeave(): boolean {
+    console.log('trying to leave home');
+    return false;
+  }
 }

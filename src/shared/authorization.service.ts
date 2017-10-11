@@ -15,13 +15,20 @@ export class AuthorizationService {
     identity: Identity;
     authSubject: Subject<any>;
     user: User;
+    failedFunction: number;
+    callAttempted: boolean = false;
 
     constructor(private http: Http) {
         this.initializeService();
     }
 
-    authenticate(identity: Identity): void {
+    authenticate(user: string, pass: string): void {
+        let identity: Identity = {
+            userName: user,
+            password: pass
+        }
         this.identity = identity;
+        this.retryFailedCall();
     }
 
     preServiceCall(functionId: number): void {
@@ -35,7 +42,10 @@ export class AuthorizationService {
             search: urlParams*/
         }
         let data: SubjectData = <SubjectData>{};
-        this.http.post(JLockConstants.HOSTURL + '/oauth/token?username=lilricky&password=bloop&grant_type=password&client_id=josh&client_secret=joshsecret', args)
+        this.http.post(JLockConstants.HOSTURL + '/oauth/token?username=' +
+            this.identity.userName + '&password=' + this.identity.password +
+            '&grant_type=password&client_id=' + JLockConstants.Client.id +
+            '&client_secret=' + JLockConstants.Client.secret, args)
             .subscribe(response => {
                 let r = response.json();
                 console.log('auth response', r.access_token);
@@ -45,10 +55,23 @@ export class AuthorizationService {
                     token: r.access_token
                 }
                 this.authSubject.next(data);
+                this.authSuccessful(true);
             }, error => {
                 // show sign in
                 this.authSubject.next(Observable.throw('No token available'));
+                console.error('Sign In failed', error);
+                this.authSuccessful(false);
+                this.failedFunction = functionId;
             })
+    }
+
+    authSuccessful(success: boolean) {
+        this.authenticated = success;
+        this.callAttempted = true;
+    }
+
+    retryFailedCall() {
+        this.preServiceCall(this.failedFunction);
     }
 
     getAuthentication(): boolean {

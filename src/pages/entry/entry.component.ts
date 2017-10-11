@@ -20,7 +20,6 @@ export class EntryComponent {
     alphabet: Array<string>;
     addModal: Modal;
     loading: Loading;
-    a: Identity;
     compId: number;
 
     constructor(private entryController: EntryController, private modalCtrl: ModalController,
@@ -39,21 +38,17 @@ export class EntryComponent {
 
         addEventListener('closeModal', () => {
             this.closeModal();
-        })
+        });
 
         this.loading = this.load.create({
             content: 'Entries are loading',
             spinner: 'bubbles'
             // bubbles circles crescent dots
-        })
-        this.a = {
-            userName: 'lilricky',
-            password: 'bloop'
-        }
+        });
 
-        this.loading.present().then(() => {
+        // this.loading.present().then(() => {
             this.loadEntries();
-        })
+        // });
 
     }
 
@@ -71,7 +66,7 @@ export class EntryComponent {
             }, () => {
                 console.log('User load finished');
                 // same logic to get entries
-            })
+            });
     }
 
     getEntries() {
@@ -82,12 +77,12 @@ export class EntryComponent {
         this.entryController.getGetEntrySubject()
             .subscribe((response) => {
                 this.entryController.processEntries(response);
-                this.loading.dismiss();
+                // this.loading.dismiss();
             }, (error) => {
                 console.error('There was an issue obtaining your entries: ' + error);
-                this.loading.dismiss();
+                // this.loading.dismiss();
             }, () => {
-            })
+            });
 
     }
 
