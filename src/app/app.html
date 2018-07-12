@@ -1,6 +1,6 @@
-<ion-nav *ngIf="auth.authenticated || !auth.callAttempted" [root]="rootPage"></ion-nav>
-<div *ngIf="!auth.authenticated && auth.callAttempted">
-    <ion-header>
+<ion-nav [root]="rootPage"></ion-nav>
+<!-- <div *ngIf="!auth.authenticated && auth.callAttempted"> -->
+    <!--<ion-header>
         <ion-grid>
             <ion-row>
                 <ion-col>
@@ -13,9 +13,9 @@
             </ion-row>
 
         </ion-grid>
-    </ion-header>
+    </ion-header>-->
 
-    <ion-list style="margin-top: 10%" margin-top>
+    <!--<ion-list style="margin-top: 10%" margin-top>
         <ion-item>
             <ion-label color="primary" floating>User Name</ion-label>
             <ion-input type="text" [(ngModel)]="userName"></ion-input>
@@ -25,7 +25,9 @@
             <ion-input type="password" [(ngModel)]="password"></ion-input>
         </ion-item>
         <ion-item>
-            <button color="primary" ion-button full large (click)="signIn()">Full Button</button>
+            <button color="primary" ion-button full large (click)="signIn()">Sign In</button>
         </ion-item>
-    </ion-list>
-</div>
+    </ion-list>-->
+
+    <!-- <sign-in></sign-in>
+</div> -->

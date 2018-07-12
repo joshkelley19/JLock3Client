@@ -92,4 +92,8 @@ export class EntryDetailComponent implements OnDestroy {
     inputInstance() {
         // this.observer.next(this.entryService.newEntry.website);
     }
+
+    print(data){
+        console.log(data);
+    }
 }

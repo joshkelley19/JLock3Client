@@ -11,10 +11,6 @@
         <p>Website: {{entryController.selectedEntry.website}}</p>
         <p>User Name/Email: {{entryController.selectedEntry.identity}}</p>
         <input [type]="showPassword ? 'text' : 'password'" [value]="entryController.selectedEntry.password" readonly="readonly">
-        <button ion-button color="primary" (click)="toggleShowPassword()">Show Password</button>
-
-        <button ion-button color="dark" (click)="loadEdit()">Edit Entry</button>
-        <button ion-button color="danger" (click)="deleteEntry()">Delete Entry</button>
     </div>
 
     <div *ngIf="editingEntry" id="entryEdit">
@@ -25,12 +21,34 @@
         <label>New Password</label>
         <input type="text" [(ngModel)]="entryController.selectedEntry.password">
         <label>Confirm New Password</label>
-        <input type="text" [(ngModel)]="confPass">
-        {{entryController.newEntry.password === confPass}}
+        <input type="text" [(ngModel)]="confPass"> {{entryController.newEntry.password === confPass}}
         <button ion-button color="primary" (click)="cancelEdit()">Cancel</button>
         <button ion-button color="dark" #save [clear]="entryController.newEntry.password !== confPass" (click)="save._style === 'clear' ? showErrors() : saveEditedEntry()">Save Entry</button>
         <div *ngIf="showingErrors">
             <div *ngIf="entryController.newEntry.password !== confPass" class="errorMessage">Password Confirmation Must Match</div>
         </div>
     </div>
+
+
+
+    <ion-list [sliding]="true">
+        <ion-list-header>
+            Entry
+        </ion-list-header>
+        <ion-item>
+            <ion-label>
+                Show
+            </ion-label>
+            <ion-checkbox [(ngModel)]="showPassword"></ion-checkbox>
+        </ion-item>
+        <button ion-item (click)="loadEdit()">
+                Edit Entry
+        </button>
+        <button ion-item color="danger" (click)="deleteEntry()">
+                Delete Entry
+            <div item-content>
+                <ion-icon name="trash" item-end></ion-icon>
+            </div>
+        </button>
+    </ion-list>
 </ion-content>

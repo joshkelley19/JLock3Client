@@ -65,6 +65,15 @@ export class AuthorizationService {
             })
     }
 
+    signUp(user: User) {
+        this.http.post(JLockConstants.HOSTURL + '/user/add', user)
+            .subscribe(response => {
+                console.log('add user response', response);
+            }, error => {
+                console.error('add user error ', error);
+            })
+    }
+
     authSuccessful(success: boolean) {
         this.authenticated = success;
         this.callAttempted = true;
@@ -84,7 +93,7 @@ export class AuthorizationService {
 
     generateFunctionId(): number {
         // todo set id manually to avoid conflicts
-        return Math.floor(Math.random() * 1000000000);
+        return Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
     }
 
     setIdentity(identity: Identity) {
@@ -103,7 +112,10 @@ export class AuthorizationService {
 
     initializeService() {
         this.authenticated = false;
-        this.identity = <Identity>{};
+        this.identity = {
+            userName: 'lilricky',
+            password: 'bloop'
+        };
         this.authToken = '';
         this.authSubject = new Subject();
     }

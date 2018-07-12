@@ -53,6 +53,7 @@ export class EntryComponent {
     }
 
     loadEntries() {
+        console.log('starting up');
         this.auth.preServiceCall(this.userController.userFunctionId);
     }
 
