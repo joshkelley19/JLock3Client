@@ -13,30 +13,25 @@ import { AuthorizationService } from '../authorization.service';
 @Injectable()
 export class UserController {
     userFunctionId: number;
-    userSubject: Subject<User>;
 
     constructor(private http: Http, private auth: AuthorizationService) {
         this.initializeService();
     }
 
-    getUser(token: string) {
-        let headers = new Headers();
-        headers.append('Authorization', 'Bearer ' + token);
-        let args: RequestOptionsArgs = {
+    getUser(): Observable<any> {
+        // let headers = new Headers();
+        // headers.append('Authorization', 'Bearer ' + this.auth.authToken);
+        let args: RequestOptionsArgs = this.auth.getArgs();/* {
             headers
-        }
-        console.log('Authorizing with token = ', token);
+        } */
+        console.log('get user args ', args);
         return this.http.get(JLockConstants.HOSTURL + '/user/', args)
             .map(response => {
+                console.log('user response', response);
                 // get principal user
                 let returnedUser = response.json();
-                console.log('user response', returnedUser.principal.user);
                 return returnedUser.principal.user;
             });
-    }
-
-    getUserSubject() {
-        return this.userSubject;
     }
 
     processUser(httpResponse) {
@@ -44,27 +39,7 @@ export class UserController {
         console.log('returned user', this.auth.user);
     }
 
-    setUserSubscription() {
-        this.auth.getAuthSubject()
-            .filter((data: SubjectData) => {
-                console.log('userFunctionId ', this.userFunctionId, ' data.functionId ', data.functionId)
-                return data.functionId !== undefined && this.userFunctionId === data.functionId;
-            })
-            .subscribe((data: SubjectData) => {
-                if (data.token !== null && data.token !== undefined) {
-                    this.getUser(data.token)
-                        .subscribe((user: User) => {
-                            console.log('sending to user subject ', user);
-                            this.userSubject.next(user);
-                        })
-                }
-            });
-        console.log('Local storage', localStorage);
-    }
-
     initializeService() {
         this.userFunctionId = this.auth.generateFunctionId();
-        this.userSubject = new Subject<User>();
-        this.setUserSubscription();
     }
 }

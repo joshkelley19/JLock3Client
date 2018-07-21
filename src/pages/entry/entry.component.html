@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="main">
         <ion-title>
             Vault
         </ion-title>
@@ -11,7 +11,7 @@
     <ion-item-group>
         <div *ngFor="let letter of (alphabet | letterShow: entryController.entries)">
             <div>
-                <ion-item-divider color="light">{{letter}}</ion-item-divider>
+                <ion-item-divider>{{letter}}</ion-item-divider>
                 <ion-item *ngFor="let entry of entryController.entries | letterFilter: letter" (click)="selectEntry(entry)">{{entry.website | uppercase}}</ion-item>
             </div>
         </div>

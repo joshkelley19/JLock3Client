@@ -21,6 +21,17 @@
     font-size: 28;
 }
 
+ion-content, ion-item-divider{
+    background-color:  color($colors, main, contrast) !important;
+    color: color($colors, light) !important;
+}
+
+ion-item, ion-navbar {
+    background-color: color($colors, main, base) !important;
+    color: color($colors, main, contrast) !important;
+}
+
 .main{
-    background-color: nth(nth($colors, 1), 2);
+    // background-color: nth(nth($colors, 1), 2);
+    background-color: color($colors, primary);
 }

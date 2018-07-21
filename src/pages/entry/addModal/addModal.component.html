@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color="main">
         <ion-title>
             Add Entry
         </ion-title>
@@ -15,7 +15,9 @@
     <ion-item>
         <ion-label>Randomize Password</ion-label>
         <ion-checkbox color="primary" [(ngModel)]="generatePassword"></ion-checkbox>
-        <button ion-button color="dark" item-right (click)="addNewEntry()">Add Entry</button>
+        <button ion-button color="dark" item-right (click)="addNewEntry()" [disabled]="addForm.invalid">
+            Add Entry
+        </button>
     </ion-item>
 
     <generator *ngIf="generatePassword" [open]="generatePassword" (out)="retrievePassword($event)"></generator>

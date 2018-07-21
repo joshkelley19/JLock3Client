@@ -1,5 +1,4 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { ContactPage } from '../pages/contact/contact';
@@ -23,6 +22,7 @@ import { AuthorizationService } from '../shared/authorization.service';
 
 import { LetterFilterPipe } from '../pages/entry/letter.pipe';
 import { LetterShowPipe } from '../pages/entry/entry.pipe';
+import { TabsService } from '../pages/tabs/tabs.service';
 
 @NgModule({
   declarations: [
@@ -63,6 +63,8 @@ import { LetterShowPipe } from '../pages/entry/entry.pipe';
     EntryController,
     PasswordController,
     UserController,
-    AuthorizationService]
+    AuthorizationService,
+    TabsService
+  ]
 })
 export class AppModule { }

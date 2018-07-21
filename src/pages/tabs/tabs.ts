@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { HomePage } from '../home/home';
-import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
 
 import { EntryComponent } from '../entry/entry.component';
 import { PreferencesComponent } from '../preferences/preferences.component';
+import { TabsService } from './tabs.service';
+import { Tabs } from '../../../node_modules/ionic-angular';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -17,8 +18,11 @@ export class TabsPage {
   tab3Root: any = ContactPage;
   entryRoot: any = EntryComponent;
   preferencesRoot: any = PreferencesComponent;
+  constructor(private tabService: TabsService) {
+  }
 
-  constructor() {
-
+  onTabChange(data){
+    console.log('Tab change to', data);
+    //check authorized on first change
   }
 }

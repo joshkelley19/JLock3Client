@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import {
-    ModalController, Modal, NavController, NavOptions,
+    ModalController, Modal, NavController,
     LoadingController, Loading
 } from 'ionic-angular';
+import 'rxjs';
 
 import { AddModalComponent } from './addModal/addModal.component';
 import { EntryDetailComponent } from './entryDetail/entryDetail.component';
-import { Entry, User, Identity } from '../../model';
+import { Entry, User } from '../../model';
 import { EntryController } from '../../shared/controllers/entry.controller';
 import { UserController } from '../../shared/controllers/user.controller';
 import { AuthorizationService } from '../../shared/authorization.service';
@@ -26,8 +27,8 @@ export class EntryComponent {
         private nav: NavController, private load: LoadingController,
         private userController: UserController, private auth: AuthorizationService) {
         // todo add initialize function
-        this.userResponse();
-        this.entriesResponse();
+        // this.loadEntries();
+        console.log('entry component constructor');
         this.alphabet = ['A', 'B', 'C', 'D', 'E', 'F',
             'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
             'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -45,37 +46,41 @@ export class EntryComponent {
             spinner: 'bubbles'
             // bubbles circles crescent dots
         });
+    }
 
-        // this.loading.present().then(() => {
+    ionViewDidEnter() {
+        if (!this.entryController.entries || !this.entryController.entries.length) {
+            console.log('checking if view did enter', event);
             this.loadEntries();
-        // });
-
+        }
     }
 
     loadEntries() {
-        console.log('starting up');
-        this.auth.preServiceCall(this.userController.userFunctionId);
-    }
-
-    userResponse() {
-        this.userController.getUserSubject()
+        // this.loading.present();
+        console.log('authenticating from entry component');
+        this.auth.authenticate()
+            .flatMap(val => {
+                console.log('TESTING first flatmap', val);
+                return this.userController.getUser();
+            })
             .subscribe((user: User) => {
+                console.log('TESTING retrieved user', user);
                 this.userController.processUser(user);
                 this.getEntries();
+                this.auth.authResponse(true);
             }, error => {
                 console.error('auth failed', error);
+                this.auth.authResponse(false);
+                // this.loading.dismiss();
             }, () => {
                 console.log('User load finished');
+                // this.loading.dismiss();
                 // same logic to get entries
-            });
+            });        // this.auth.preServiceCall(this.userController.userFunctionId);
     }
 
     getEntries() {
-        this.auth.preServiceCall(this.entryController.getEntryFunctionId);
-    }
-
-    entriesResponse() {
-        this.entryController.getGetEntrySubject()
+        this.entryController.getEntries()
             .subscribe((response) => {
                 this.entryController.processEntries(response);
                 // this.loading.dismiss();
@@ -84,7 +89,7 @@ export class EntryComponent {
                 // this.loading.dismiss();
             }, () => {
             });
-
+        // this.auth.preServiceCall(this.entryController.getEntryFunctionId);
     }
 
     selectEntry(entry: Entry) {

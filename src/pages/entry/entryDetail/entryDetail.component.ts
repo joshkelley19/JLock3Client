@@ -76,12 +76,39 @@ export class EntryDetailComponent implements OnDestroy {
         console.log('saving edited entry');
         // todo separate entry being edited from saved entry
         //fix edit logic and service call
-
-        this.auth.preServiceCall(this.entryController.addEntryFunctionId);
+        this.auth.authenticate()
+            .flatMap(val => {
+                console.log('modifying entry with auth', val);
+                return this.entryController.addEntries();
+            })
+            .subscribe(response => {
+                console.log('all modify entry response data', response);
+                this.entryController.processEntries(response);
+            }, err => {
+                console.error('unable to authenticate and modify entry', err);
+                this.entryController.entries = [];
+            }, () => {
+                this.goBack();
+            });
+        // this.auth.preServiceCall(this.entryController.addEntryFunctionId);
     }
 
     deleteEntry() {
-        this.auth.preServiceCall(this.entryController.deleteEntryFunctionId);
+        this.auth.authenticate()
+            .flatMap(val => {
+                console.log('modifying entry with auth', val);
+                return this.entryController.deleteEntry();
+            })
+            .subscribe(response => {
+                console.log('all delete entry response data', response);
+                this.entryController.processEntries(response);
+            }, err => {
+                console.error('unable to authenticate and delete entry', err);
+            }, () => {
+                this.goBack();
+            });
+
+        // this.auth.preServiceCall(this.entryController.deleteEntryFunctionId);
     }
 
     showErrors() {
@@ -93,7 +120,11 @@ export class EntryDetailComponent implements OnDestroy {
         // this.observer.next(this.entryService.newEntry.website);
     }
 
-    print(data){
+    goBack() {
+        this.nav.pop();
+    }
+
+    print(data) {
         console.log(data);
     }
 }
